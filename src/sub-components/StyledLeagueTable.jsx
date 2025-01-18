@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const StandingLeagueTable = () => {
@@ -20,18 +19,21 @@ const StandingLeagueTable = () => {
   };
 
   const fetchLeagues = async () => {
-    const config = {
-      method: "get",
-      url: "https://esports.sportdevs.com/leagues?limit=10",
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer f-5ixQ7KNkecJ8O0XgJ_NA",
-      },
-    };
-
     try {
-      const response = await axios(config);
-      setLeagues(response.data);
+      const response = await fetch("https://esports.sportdevs.com/leagues?limit=10", {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer f-5ixQ7KNkecJ8O0XgJ_NA'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setLeagues(data);
     } catch (err) {
       console.error("Error Fetching Data:", err);
       setError("Failed to fetch leagues. Please try again later.");
@@ -53,12 +55,11 @@ const StandingLeagueTable = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold text-white mb-6 text-center">
-  Popular Esports Leagues{" "}
-  <span role="img" aria-label="fire">
-    🔥
-  </span>
-</h1>
-
+        Popular Esports Leagues{" "}
+        <span role="img" aria-label="fire">
+          🔥
+        </span>
+      </h1>
 
       <p className="mb-2">Start your journey by knowing the leagues schedule!</p>
       
