@@ -1,27 +1,43 @@
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
+
+// SVG Icons as components
+const CloseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const ChevronLeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+);
 
 const NewsModal = ({ news, onClose }) => {
   if (!news) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Blurred backdrop */}
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal content */}
       <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black border border-blue-900 rounded-lg z-50 m-4">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-black/75 text-white transition-colors z-10"
         >
-          <X size={24} />
+          <CloseIcon />
         </button>
 
-        {/* Hero image */}
         <div className="relative w-full h-[40vh]">
           <img
             src={news.image}
@@ -31,7 +47,6 @@ const NewsModal = ({ news, onClose }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
         </div>
 
-        {/* Content */}
         <div className="p-6">
           <div className="flex items-center space-x-2 mb-4">
             <span className="bg-blue-900 px-3 py-1 rounded-full text-sm text-white">
@@ -52,7 +67,6 @@ const NewsModal = ({ news, onClose }) => {
             {news.content}
           </div>
 
-          {/* Share buttons */}
           <div className="flex space-x-4 mt-8 pt-8 border-t border-gray-800">
             <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors">
               Share
@@ -70,7 +84,9 @@ const NewsModal = ({ news, onClose }) => {
 const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [isCardAutoScrolling, setIsCardAutoScrolling] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedNews, setSelectedNews] = useState(null);
@@ -81,6 +97,7 @@ const News = () => {
     "Reviews",
   ]);
   const [activeCategory, setActiveCategory] = useState("Latest");
+  const cardsPerPage = 3; // Number of cards to show at once
 
   const CategoryTabs = () => (
     <div className="flex space-x-4 mb-6 overflow-x-auto">
@@ -100,75 +117,113 @@ const News = () => {
     </div>
   );
 
-  const NewsGrid = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-      {newsData.slice(1, 7).map((news) => (
-        <div
-          key={news.id}
-          className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300"
-          onClick={() => setSelectedNews(news)}
-        >
-          <img
-            src={news.image}
-            alt={news.title}
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <span className="bg-blue-900 px-2 py-1 rounded-full text-xs text-white">
-                {news.category}
-              </span>
-              <span className="text-xs text-gray-400">{news.date}</span>
-            </div>
-            <h3 className="text-white font-semibold mb-2 line-clamp-2">
-              {news.title}
-            </h3>
-            <div className="flex items-center text-xs text-gray-400">
-              <span>{news.author}</span>
-              <span className="mx-2">•</span>
-              <span>{news.readTime}</span>
-            </div>
+  const NewsGrid = () => {
+    const totalCards = newsData.slice(1).length;
+    const maxStartIndex = Math.max(0, totalCards - cardsPerPage);
+    const visibleCards = newsData
+      .slice(1)
+      .slice(currentCardIndex, currentCardIndex + cardsPerPage);
+
+    return (
+      <div className="relative">
+        <div className="overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${(currentCardIndex * 100) / cardsPerPage}%)`,
+            }}
+          >
+            {newsData.slice(1).map((news) => (
+              <div
+                key={news.id}
+                className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-3"
+                onClick={() => setSelectedNews(news)}
+              >
+                <div className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
+                  <img
+                    src={news.image}
+                    alt={news.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="bg-blue-900 px-2 py-1 rounded-full text-xs text-white">
+                        {news.category}
+                      </span>
+                      <span className="text-xs text-gray-400">{news.date}</span>
+                    </div>
+                    <h3 className="text-white font-semibold mb-2 line-clamp-2">
+                      {news.title}
+                    </h3>
+                    <div className="flex items-center text-xs text-gray-400">
+                      <span>{news.author}</span>
+                      <span className="mx-2">•</span>
+                      <span>{news.readTime}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-  );
+        
+        <button
+          onClick={() => {
+            setIsCardAutoScrolling(false);
+            setCurrentCardIndex((prev) =>
+              prev === 0 ? maxStartIndex : prev - 1
+            );
+          }}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-blue-900/50 hover:bg-blue-900/75 text-white p-2 rounded-full transition-colors z-10"
+        >
+          <ChevronLeftIcon />
+        </button>
+        <button
+          onClick={() => {
+            setIsCardAutoScrolling(false);
+            setCurrentCardIndex((prev) =>
+              prev >= maxStartIndex ? 0 : prev + 1
+            );
+          }}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-900/50 hover:bg-blue-900/75 text-white p-2 rounded-full transition-colors z-10"
+        >
+          <ChevronRightIcon />
+        </button>
+      </div>
+    );
+  };
 
   useEffect(() => {
-    
-      const fetchNews = async () => {
-        try {
-          const API_KEY = "3ea93115b3b0aee4b406773d62a99227"; // Replace with your NewsAPI key
-          const response = await fetch(
-            `https://gnews.io/api/v4/search?q=esports&token=${API_KEY}`
-          );
-          const data = await response.json();
-  
-          const transformedData = data.articles.map((article, index) => ({
-            id: index,
-            title: article.title,
-            date: new Date(article.publishedAt).toLocaleDateString(),
-            category: article.source.name,
-            readTime: `${Math.ceil(
-              article.content?.length / 1000 || 3
-            )} min read`,
-            // author: article.author || "Unknown",
-            image: article.image || "/api/placeholder/800/400",
-            content: article.content,
-          }));
-  
-          setNewsData(transformedData);
-          setLoading(false);
-        } catch (error) {
-          setError("Failed to fetch news");
-          setLoading(false);
-        }
-      };
-  
-      fetchNews();
-    }, []);
-  
+    const fetchNews = async () => {
+      try {
+        const API_KEY = "3ea93115b3b0aee4b406773d62a99227";
+        const response = await fetch(
+          `https://gnews.io/api/v4/search?q=esports&token=${API_KEY}`
+        );
+        const data = await response.json();
 
+        const transformedData = data.articles.map((article, index) => ({
+          id: index,
+          title: article.title,
+          date: new Date(article.publishedAt).toLocaleDateString(),
+          category: article.source.name,
+          readTime: `${Math.ceil(article.content?.length / 1000 || 3)} min read`,
+          image: article.image || "/api/placeholder/800/400",
+          content: article.content,
+        }));
+
+        setNewsData(transformedData);
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch news");
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  // Auto-scroll for hero section
   useEffect(() => {
     let interval;
     if (isAutoScrolling && newsData.length > 0) {
@@ -176,10 +231,24 @@ const News = () => {
         setCurrentIndex((prevIndex) =>
           prevIndex === newsData.length - 1 ? 0 : prevIndex + 1
         );
-      }, 5000);
+      }, 2000);
     }
     return () => clearInterval(interval);
   }, [isAutoScrolling, newsData.length]);
+
+  // Auto-scroll for cards
+  useEffect(() => {
+    let interval;
+    if (isCardAutoScrolling && newsData.length > 0) {
+      interval = setInterval(() => {
+        setCurrentCardIndex((prevIndex) => {
+          const maxStartIndex = Math.max(0, newsData.length - 1 - cardsPerPage);
+          return prevIndex >= maxStartIndex ? 0 : prevIndex + 1;
+        });
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [isCardAutoScrolling, newsData.length]);
 
   const handlePrevious = () => {
     setIsAutoScrolling(false);
@@ -219,9 +288,7 @@ const News = () => {
                         <span className="bg-blue-900 px-3 py-1 rounded-full text-sm">
                           {news.category}
                         </span>
-                        <span className="text-sm text-gray-300">
-                          {news.date}
-                        </span>
+                        <span className="text-sm text-gray-300">{news.date}</span>
                       </div>
                       <h2 className="text-2xl font-bold mb-2 text-white">
                         {news.title}
@@ -240,13 +307,13 @@ const News = () => {
               onClick={handlePrevious}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-blue-900/50 hover:bg-blue-900/75 text-white p-2 rounded-full transition-colors"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeftIcon />
             </button>
             <button
               onClick={handleNext}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-blue-900/50 hover:bg-blue-900/75 text-white p-2 rounded-full transition-colors"
             >
-              <ChevronRight size={24} />
+              <ChevronRightIcon />
             </button>
           </div>
 
@@ -265,14 +332,14 @@ const News = () => {
             ))}
           </div>
         </div>
-        <NewsGrid />
+        <div className="mt-8">
+          <NewsGrid />
+        </div>
       </div>
-      {/* Modal */}
       {selectedNews && (
         <NewsModal news={selectedNews} onClose={() => setSelectedNews(null)} />
       )}
 
-      {/* View More button */}
       <div className="text-center mt-8">
         <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
           View More News
