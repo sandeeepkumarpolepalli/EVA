@@ -66,5 +66,7 @@ body::before {
   body {
     background-image: none; /* Remove the background image */
     background-color: black; /* Set a solid black background */
+    width: 100vw; /* Ensure the black background covers the full viewport width */
+    height: 100vh; /* Covers the full viewport height */
   }
 }
