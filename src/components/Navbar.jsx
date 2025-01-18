@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import AuthButton from "./AuthButton"; // Import the AuthButton component
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
@@ -57,14 +56,12 @@ const Navbar = () => {
     { to: "/news", label: "News" },
     { to: "/reviews", label: "Reviews" },
     { to: "/developer-interviews", label: "Developer-Interviews" },
-    { to: "/patch-Notes", label: "Patch-Notes"}
+    { to: "/patch-Notes", label: "Patch-Notes" }
   ];
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-gradient-to-r from-black via-blue-900 to-black shadow-lg' : 'bg-transparent'
-      }`}>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-gradient-to-r from-black via-blue-900 to-black shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto flex items-center h-16">
           {/* Hamburger menu */}
           <button 
@@ -86,26 +83,16 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Auth Button */}
+            {/* AuthButton Component (Desktop) */}
             <div className="flex items-center gap-6">
-              <button
-                onClick={() => setShowAuthModal(true)}
-                className="block px-6 py-2 text-lg font-medium relative overflow-hidden rounded-3xl text-white group hover:text-blue-500 transition-colors duration-300"
-              >
-                <span className="relative z-10">{isLogin ? "Login" : "Sign Up"}</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-black via-blue-900 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-                <span className="absolute top-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-800 group-hover:w-full transition-all duration-300 rounded-full" />
-                <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-gradient-to-l from-blue-500 to-blue-800 group-hover:w-full transition-all duration-300 rounded-full" />
-              </button>
+              <AuthButton />
             </div>
           </div>
         </div>
 
         {/* Mobile Menu Sidebar */}
         <div 
-          className={`mobile-menu fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-gradient-to-b from-black via-blue-900 to-black transform transition-transform duration-300 ease-in-out ${
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:hidden`}
+          className={`mobile-menu fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-gradient-to-b from-black via-blue-900 to-black transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
         >
           <div className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
@@ -115,18 +102,8 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)} 
               />
             ))}
-            <button
-              onClick={() => {
-                setShowAuthModal(true);
-                setIsOpen(false);
-              }}
-              className="block px-6 py-2 text-lg font-medium relative overflow-hidden rounded-3xl text-white group hover:text-blue-500 transition-colors duration-300"
-            >
-              <span className="relative z-10">{isLogin ? "Login" : "Sign Up"}</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-black via-blue-900 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-              <span className="absolute top-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-800 group-hover:w-full transition-all duration-300 rounded-full" />
-              <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-gradient-to-l from-blue-500 to-blue-800 group-hover:w-full transition-all duration-300 rounded-full" />
-            </button>
+            {/* AuthButton Component (Mobile) */}
+            <AuthButton />
           </div>
         </div>
       </nav>
