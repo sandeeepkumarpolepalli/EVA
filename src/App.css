@@ -1,0 +1,63 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&family=Rajdhani:wght@500&display=swap');
+
+@keyframes backgroundZoom {
+  0% {
+    background-size: 100% auto;
+  }
+  50% {
+    background-size: 120% auto;
+  }
+  100% {
+    background-size: 100% auto;
+  }
+}
+
+body {
+  background-image: url('./assets/HomeBg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: backgroundZoom 15s ease-in-out infinite;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.9)
+  );
+  z-index: -1;
+}
+
+@keyframes rainbow-text {
+  0% { color: #ff0000; }
+  20% { color: #ff69b4; }
+  40% { color: #7851a9; }
+  60% { color: #00ff00; }
+  80% { color: #00bfff; }
+  100% { color: #ff0000; }
+}
+
+.animate-rainbow-text {
+  animation: rainbow-text 8s linear infinite;
+}
