@@ -1,9 +1,10 @@
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 function List() {
   const [games, setGames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   async function fetchGames() {
     try {
@@ -24,64 +25,66 @@ function List() {
     fetchGames();
   }, []);
 
+  const filteredGames = games.filter((game) =>
+    game.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white text-xl">
-        Loading games...
-      </div>
-    );
+    return <div>Loading games...</div>;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {games.map((game) => (
-          <div
-            key={game.id}
-            className="group bg-gradient-to-b from-black via-blue-900 to-black 
-                     rounded-xl overflow-hidden shadow-lg hover:shadow-2xl 
-                     transition-all duration-300 transform hover:-translate-y-2"
+    <div className="p-4">
+      {/* Search Section */}
+      <div className="mb-8 max-w-md mx-auto">
+        <div className="relative flex items-center">
+          <input
+            type="text"
+            placeholder="Search games..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gradient-to-r from-gray-900 to-blue-900 text-white placeholder-gray-400 transition-all duration-300 hover:from-blue-900 hover:to-gray-900"
+          />
+          <button className="absolute right-2 p-2 rounded-full hover:bg-blue-600 transition-colors duration-300">
+            <Search className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+      </div>
+
+      {/* Games Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredGames.map((game) => (
+          <div 
+            key={game.id} 
+            className="relative bg-white rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] before:absolute before:inset-0 before:p-[1px] before:bg-gradient-to-r before:from-blue-500 before:to-blue-900 before:rounded-lg before:-z-10"
+            style={{
+              boxShadow: '0 4px 20px -2px rgba(0, 0, 150, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            }}
           >
-            <Link to={`/game/${game.id}`} className="block">
-              <div className="relative">
-                <img
-                  src={game.background_image}
-                  alt={game.name}
-                  className="w-full h-48 object-cover transition-transform duration-300 
-                           group-hover:scale-105"
-                />
-                <span className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 
-                              rounded-full text-sm font-medium">
-                  {game.genres[0]?.name || "N/A"}
-                </span>
+            <div className="relative">
+              <img src={game.background_image} alt={game.name} className="w-full h-48 object-cover" />
+              <div className="absolute top-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded">
+                {game.genres[0]?.name || "N/A"}
               </div>
-
-              <div className="p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-gray-400 text-sm">{game.released}</p>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center">
-                      <span className="text-yellow-500 text-sm">{game.rating}</span>
-                      <span className="text-gray-400 text-sm">/5</span>
-                    </div>
-                    {game.metacritic && (
-                      <span className={`px-2 py-1 rounded text-sm ${
-                        game.metacritic >= 80 ? 'bg-green-500' :
-                        game.metacritic >= 60 ? 'bg-yellow-500' : 'bg-red-500'
-                      } text-white`}>
-                        {game.metacritic}
-                      </span>
-                    )}
-                  </div>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-gray-900 to-blue-900">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-blue-100">{game.released}</span>
+                <div className="flex items-center">
+                  <span className="text-yellow-500 mr-1">{game.rating}</span>
+                  <span className="text-blue-100">/5</span>
                 </div>
-
-                <h3 className="text-white text-lg font-bold mb-2 
-                             group-hover:text-blue-400 transition-colors duration-300 
-                             line-clamp-2">
-                  {game.name}
-                </h3>
               </div>
-            </Link>
+              {game.metacritic && (
+                <div className={`inline-block px-2 py-1 rounded ${
+                  game.metacritic >= 80 ? 'bg-green-500' :
+                  game.metacritic >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                } text-white mb-2`}>
+                  {game.metacritic}
+                </div>
+              )}
+              <h3 className="text-xl font-semibold text-white">{game.name}</h3>
+            </div>
           </div>
         ))}
       </div>

@@ -61,3 +61,10 @@ body::before {
 .animate-rainbow-text {
   animation: rainbow-text 8s linear infinite;
 }
+
+@media (max-width: 767px) {
+  body {
+    background-image: none; /* Remove the background image */
+    background-color: black; /* Set a solid black background */
+  }
+}
