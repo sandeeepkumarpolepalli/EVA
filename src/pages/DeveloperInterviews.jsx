@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const YOUTUBE_API_KEY = "AIzaSyA8PoUo9dLqEqQIQ3Q4zrYTkqG5uyeH0vM";
-const NEWS_API_KEY = "4950f6e4f34a4150a7330523ab479f27";
+const YOUTUBE_API_KEY = "REACT_APP_YOUTUBE_API_KEY";
+const NEWS_API_KEY = "REACT_APP_NEWS_API_KEY";
 
 const DeveloperInterviews = () => {
   const [selectedType, setSelectedType] = useState("all");
@@ -106,7 +106,7 @@ const DeveloperInterviews = () => {
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4 text-white">Developer Insights</h1>
+        <h1 className="text-3xl font-bold mb-4 text-white">Popular Insights</h1>
 
         <div className="flex gap-3 mb-6">
           <button
