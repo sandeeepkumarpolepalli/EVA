@@ -56,7 +56,9 @@ const Navbar = () => {
     { to: "/news", label: "News" },
     { to: "/reviews", label: "Reviews" },
     { to: "/developer-interviews", label: "Developer-Interviews" },
-    { to: "/patch-Notes", label: "Patch-Notes" }
+    { to: "/patch-Notes", label: "Patch-Notes" },
+    { to: "/trends", label: "Trends" }
+    
   ];
 
   return (

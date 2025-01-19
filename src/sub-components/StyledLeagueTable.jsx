@@ -24,7 +24,7 @@ const StandingLeagueTable = () => {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer f-5ixQ7KNkecJ8O0XgJ_NA'
+          'Authorization': 'Bearer Poih0K9Eo0ighOP-aQpRYQ'
         }
       });
 
@@ -34,6 +34,7 @@ const StandingLeagueTable = () => {
 
       const data = await response.json();
       setLeagues(data);
+      console.log(data)
     } catch (err) {
       console.error("Error Fetching Data:", err);
       setError("Failed to fetch leagues. Please try again later.");

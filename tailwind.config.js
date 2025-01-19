@@ -10,6 +10,8 @@ export default {
 
       animation: {
         'rainbow-text': 'rainbow-text 8s linear infinite',
+        'flowing-gradient': 'flowingGradient 5s linear infinite',
+        'sparkle': 'sparkle 5s linear infinite'
       },
       keyframes: {
         shrinkLeft: {
@@ -21,6 +23,14 @@ export default {
           '0%': { width: '100%', left: '0' },
           '50%': { width: '20%', left: '0' },
           '100%': { width: '100%', left: '0' }
+        },
+        flowingGradient: {
+          '0%, 100%': { backgroundPosition: '0% center' },
+          '50%': { backgroundPosition: '100% center' },
+        },
+        sparkle: {
+          '0%': { backgroundPosition: '0% center' },
+          '100%': { backgroundPosition: '200% center' },
         }
       },
       colors: {

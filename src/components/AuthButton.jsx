@@ -23,7 +23,15 @@ const AuthButton = () => {
       {/* Modal Overlay */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-900 p-8 rounded-lg w-96 border border-blue-800 shadow-xl">
+          <div className="relative bg-gray-900 p-8 rounded-lg w-96 border border-blue-800 shadow-xl">
+            {/* Close Button - Moved inside modal container */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
+            >
+              ×
+            </button>
+
             {/* Form Header */}
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-white mb-2">
@@ -93,14 +101,6 @@ const AuthButton = () => {
                 </button>
               </div>
             </form>
-
-            {/* Close Button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
       )}

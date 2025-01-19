@@ -203,7 +203,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const API_KEY = "d97f62b710606c98e15a7973c33a2483";
+        const API_KEY = "ca0078c8431dc2f3d98547353f13f9ac";
         const response = await fetch(
           `https://gnews.io/api/v4/search?q=esports&token=${API_KEY}`
         );

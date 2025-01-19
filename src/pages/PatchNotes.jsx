@@ -1,36 +1,23 @@
 import React, { useEffect, useState } from "react";
 
-const PatchNotes = ({ appId }) => {
+const PatchNotes = ({ appId, onBack }) => {
   const [patchNotes, setPatchNotes] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [expandedNote, setExpandedNote] = useState(null);
 
   useEffect(() => {
     const fetchPatchNotes = async () => {
       try {
         const response = await fetch(
-          "https://cors-anywhere.herokuapp.com/https://store.steampowered.com/events/ajaxgetadjacentpartnerevents/?appid=899770&count_before=0&count_after=100&event_type_filter=13",
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer YOUR_API_KEY', // Your CORS Anywhere API key
-            },
-          }
+          `https://cors-anywhere.herokuapp.com/https://store.steampowered.com/events/ajaxgetadjacentpartnerevents/?appid=${appId}&count_before=0&count_after=100&event_type_filter=13`
         );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
-        console.log("API Response:", data);
 
         if (data && data.events) {
           setPatchNotes(data.events);
         } else {
-          throw new Error("Invalid response data structure");
+          throw new Error("Invalid response or no patch notes found.");
         }
       } catch (err) {
         setError("Failed to fetch patch notes. Please try again later.");
@@ -40,62 +27,63 @@ const PatchNotes = ({ appId }) => {
       }
     };
 
-    fetchPatchNotes();
+    if (appId) {
+      fetchPatchNotes();
+    }
   }, [appId]);
 
-  if (loading) {
-    return (
-      <div className="p-4 text-center text-gray-600">
-        Loading patch notes...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-4 text-center text-red-600">
-        {error}
-      </div>
-    );
-  }
+  const toggleNote = (gid) => {
+    setExpandedNote(expandedNote === gid ? null : gid);
+  };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Patch Notes</h1>
-      {patchNotes.length === 0 ? (
-        <p className="text-gray-600 text-center">No patch notes available.</p>
-      ) : (
-        <div className="space-y-6">
-          {patchNotes.map((note) => (
-            <div 
-              key={note.gid} 
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <div className="p-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold mb-2">
-                  {note.event_name}
-                </h2>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>
-                    <strong>Start Time:</strong>{" "}
-                    {new Date(note.rtime32_start_time * 1000).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>End Time:</strong>{" "}
-                    {new Date(note.rtime32_end_time * 1000).toLocaleString()}
-                  </p>
+    <div className="w-full min-h-screen bg-gray-900 px-6 py-4">
+      <button 
+        onClick={onBack} 
+        className="px-4 py-2 mb-6 text-gray-300 flex items-center gap-2 hover:text-white transition-colors"
+      >
+        <span>←</span> Back to Games
+      </button>
+
+      <div className="text-3xl text-blue-400 mb-8 px-4">PATCH NOTES</div>
+      
+      <div className="space-y-6">
+        {loading && <div className="text-blue-400 p-4">Loading patch notes...</div>}
+        {error && <div className="text-red-400 p-4">{error}</div>}
+        {!loading && !error && (
+          <>
+            {patchNotes.length === 0 ? (
+              <div className="text-blue-400 p-4">No patch notes available.</div>
+            ) : (
+              patchNotes.map((note) => (
+                <div key={note.gid} className="w-full">
+                  <button
+                    onClick={() => toggleNote(note.gid)}
+                    className="w-full text-left py-8 px-8 text-blue-400 hover:text-blue-300 transition-colors text-lg bg-gray-800 bg-opacity-30"
+                  >
+                    {note.event_name}
+                  </button>
+                  
+                  {expandedNote === note.gid && (
+                    <div className="px-8 py-6 border-t border-gray-700 text-gray-300 bg-gray-800 bg-opacity-30">
+                      <div className="text-sm text-blue-400 mb-2">
+                        Start: {new Date(note.rtime32_start_time * 1000).toLocaleString()}
+                      </div>
+                      <div className="text-sm text-blue-400 mb-4">
+                        End: {new Date(note.rtime32_end_time * 1000).toLocaleString()}
+                      </div>
+                      <div 
+                        className="prose prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: note.announcement_body?.body }}
+                      />
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div 
-                className="p-4 prose max-w-none"
-                dangerouslySetInnerHTML={{
-                  __html: note.announcement_body.body.replace(/\[\/?[^\]]*\]/g, ""),
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+              ))
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
