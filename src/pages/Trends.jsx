@@ -152,11 +152,11 @@ const Trends = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[400px]">
+        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[500px]">
           <h2 className="text-xl font-semibold mb-4 text-blue-100">
             Top Games by Player Count
           </h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <BarChart data={trendingGames.slice(0, 10)}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a8a" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} stroke="#93c5fd" />
@@ -168,9 +168,9 @@ const Trends = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[400px]">
+        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[500px]">
           <h2 className="text-xl font-semibold mb-4 text-blue-100">Rating Distribution</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie
                 data={ratingData}
@@ -194,9 +194,9 @@ const Trends = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[400px]">
+        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[500px]">
           <h2 className="text-xl font-semibold mb-4 text-blue-100">Genre Distribution</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <BarChart data={genreData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a8a" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} stroke="#93c5fd" />
@@ -208,9 +208,9 @@ const Trends = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[400px]">
+        <div className="bg-gradient-to-br from-blue-900/50 to-black/50 p-6 rounded-lg shadow-xl border border-blue-800 h-[500px]">
           <h2 className="text-xl font-semibold mb-4 text-blue-100">Rating Trends</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <LineChart data={trendingGames.slice(0, 10)}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a8a" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} stroke="#93c5fd" />

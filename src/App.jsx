@@ -9,7 +9,6 @@ import Reviews from './pages/Reviews.jsx';
 import Trends from './pages/Trends.jsx';
 
 
-
 function App() {
 
   return (
@@ -17,6 +16,7 @@ function App() {
     <Router>
        <Navbar />
           <Routes>
+                     
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
             <Route path="/reviews" element={<Reviews/>} />

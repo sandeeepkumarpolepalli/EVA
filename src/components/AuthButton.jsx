@@ -45,7 +45,7 @@ const AuthButton = () => {
             </div>
 
             {/* Form */}
-            <form className="space-y-4">
+            <form className="space-y-4" >
               {!isLogin && (
                 <div>
                   <label className="block text-gray-300 mb-1">Username</label>

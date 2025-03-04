@@ -37,6 +37,7 @@ const UpcomingGames = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const result = await response.json();
+        console.log(result);
         const processedGames = result.map((game) => ({
           ...game,
           coverUrl: game.cover?.url
