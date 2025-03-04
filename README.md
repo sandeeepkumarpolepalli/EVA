@@ -34,7 +34,7 @@ npm start
 [EVA - Live on Vercel](https://eva-nine-beryl.vercel.app/)
 
 ## 📸 Screenshots
-![EVA Homepage]((public/home_page.png)
+![EVA Homepage]((public/home_page.jpg)
 
 ## 👨‍💻 Contributors
 - **Manideep** - [GitHub Profile](https://github.com/yourusername)
