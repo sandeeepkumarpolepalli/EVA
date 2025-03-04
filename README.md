@@ -37,7 +37,7 @@ npm start
 ![EVA Homepage](public/home_page.jpg)
 
 ## 👨‍💻 Contributors
-- **Manideep** - [GitHub Profile](https://github.com/yourusername)
+- **Manideep** - [GitHub Profile](https://github.com/Manideep-25)
 
 ## 📜 License
 This project is licensed under the MIT License.
