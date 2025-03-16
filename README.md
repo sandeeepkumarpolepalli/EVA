@@ -38,6 +38,7 @@ npm start
 
 ## 👨‍💻 Contributors
 - **Manideep** - [GitHub Profile](https://github.com/Manideep-25)
+- [@sandeeepkumarpolepalli](https://github.com/username) - Helped with some relevant features in the project.
 
 ## 📜 License
 This project is licensed under the MIT License.
